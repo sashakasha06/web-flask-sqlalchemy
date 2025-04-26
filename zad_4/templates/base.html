@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <h3>Тестовый пользователь: test@test.ru Password12345</h3>
+    <h3>Тестовый пользователь 2: test2@test.ru Password54321</h3>
+    {% if current_user.is_authenticated %}
+        <p>Вы вошли как: {{ current_user.name }}</p>
+        <a href="{{ url_for('login') }}">Перелогиниться</a>
+        <a href="{{ url_for('add_work') }}">Добавить работу</a>
+    {% else %}
+        <a href="{{ url_for('login') }}">Залогиниться</a>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>

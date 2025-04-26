@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Добро пожаловать{% if current_user.is_authenticated %}, {{ current_user.name }}{% endif %}!</h1>
+
+    {% if current_user.is_authenticated %}
+        <h2>Ваши работы:</h2>
+        {% if works %}
+            <ul>
+                {% for work in works %}
+                    <li>
+                        <h3>{{ work.title }}</h3>
+                        <p>{{ work.description }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>У вас пока нет работ.</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}
