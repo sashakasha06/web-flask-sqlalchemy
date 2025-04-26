@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Добавить работу{% endblock %}
+
+{% block content %}
+    <h2>Добавить новую работу</h2>
+    <form method="POST" action="{{ url_for('add_work') }}">
+        <div>
+            <label for="description">Описание:</label>
+            <input id="description" name="description" required>
+        </div>
+        <button type="submit">Добавить</button>
+    </form>
+{% endblock %}

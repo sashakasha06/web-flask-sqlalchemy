@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Панель капитана - Все работы{% endblock %}
+
+{% block content %}
+    <h2>Панель капитана</h2>
+    <p>Все работы в системе:</p>
+
+    <div class="works-list">
+        {% for work in works %}
+            <div class="work-item card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Работа #{{ work.id }}
+                        <span class="badge bg-secondary">Автор: {{ work.user_id }}</span>
+                    </h5>
+                    <p class="card-text">{{ work.description }}</p>
+                    <div class="d-flex gap-2">
+                        <a href="{{ url_for('edit_work', work_id=work.id) }}"
+                           class="btn btn-sm btn-primary">
+                            Редактировать
+                        </a>
+                        <form action="{{ url_for('delete_work', work_id=work.id) }}"
+                              method="POST"
+                              onsubmit="return confirm('Удалить эту работу?')">
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                Удалить
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">
+        ← Вернуться к своему списку
+    </a>
+{% endblock %}
