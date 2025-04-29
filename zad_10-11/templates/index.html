@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Добро пожаловать{% if current_user.is_authenticated %}, {{ current_user.name }}{% endif %}!</h1>
+
+    {% if current_user.is_authenticated %}
+        <h2>Ваши работы:</h2>
+        {% if works %}
+            <ul>
+            {% for work in works %}
+                <div class="work-item">
+                    <p>{{ work.description }}</p>
+                    {% if work.can_edit(current_user) %}
+                        <a href="{{ url_for('edit_work', work_id=work.id) }}" class="btn btn-sm btn-outline-primary">Редактировать</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>У вас пока нет работ.</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

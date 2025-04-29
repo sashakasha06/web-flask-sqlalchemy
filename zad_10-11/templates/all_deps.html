@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<p>Current user ID: {{ current_user.id }}</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Departments</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+        .actions a, .actions button {
+            padding: 5px 10px;
+            text-decoration: none;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .actions a {
+            background-color: #4CAF50;
+        }
+        .actions button {
+            background-color: #f44336;
+        }
+        .actions a:hover {
+            background-color: #45a049;
+        }
+        .actions button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <h1>All Departments</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Chief</th>
+                <th>Email</th>
+                <th>Members</th>
+                {% if current_user.id|string == '1' %}
+                <th>Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for dep_id, dep in departments.items() %}
+            <tr>
+                <td>{{ dep_id }}</td>
+                <td>{{ dep.title }}</td>
+                <td>{{ dep.chief }}</td>
+                <td>{{ dep.email }}</td>
+                <td>{{ dep.members|join(', ') }}</td>
+                {% if current_user.id|string == '1' %}
+                <td class="actions">
+                    <a href="{{ url_for('edit_department', dep_id=dep_id) }}">Edit</a>
+                    <form action="{{ url_for('delete_department', dep_id=dep_id) }}" method="post" style="display:inline;">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token|safe  }}">
+                        <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот департамент?')">Delete</button>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

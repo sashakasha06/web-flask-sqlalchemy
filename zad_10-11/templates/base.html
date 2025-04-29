@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    {% if current_user.is_authenticated  and current_user.id == 1 %}
+        <p>Вы вошли как: {{ current_user.name }}</p>
+        <a href="{{ url_for('login') }}">Перелогиниться</a>
+        <a href="{{ url_for('add_work') }}">Добавить работу</a>
+        <a href="{{ url_for('all_works') }}">Список всех работ</a>
+    {% elif current_user.is_authenticated %}
+        <p>Вы вошли как: {{ current_user.name }}</p>
+        <a href="{{ url_for('login') }}">Перелогиниться</a>
+        <a href="{{ url_for('add_work') }}">Добавить работу</a>
+    {% else %}
+        <a href="{{ url_for('login') }}">Залогиниться</a>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>
